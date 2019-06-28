@@ -4,19 +4,15 @@ import java.io.PrintWriter;
 import java.util.regex.*;
 
 public class Corretora extends Pessoa {
-
-    int saldoT;
     Scanner input = new Scanner(System.in);
     List<Pessoa> listaPessoas = new ArrayList<Pessoa>();
-    Cconta cCarteira = new Cconta();
+    List<Cconta> carteira = new ArrayList<Cconta>();
 
     public class Cconta {
         private String codigo;
         private int agencia;
         private int conta;
-        private double valor;
-
-        List<Cconta> carteira = new ArrayList<Cconta>();
+        private double valor = 0;
 
         public void setCodigo(String codigo) {
             this.codigo = codigo;
@@ -49,6 +45,11 @@ public class Corretora extends Pessoa {
         public double getValor() {
             return this.valor;
         }
+
+        public String toString() {
+            return "Valor: R$ " + this.valor;
+        }
+
     }
 
     public void Cadastro() {
@@ -87,8 +88,11 @@ public class Corretora extends Pessoa {
         input.nextLine();
     }
 
-    public void mostraLista() {
+    public void MostraLista() {
         System.out.println(listaPessoas.toString());
+        System.out.println("Precione Enter para voltar para o Menu ");
+        input.nextLine();
+
     }
 
     public void Editar() {
@@ -123,8 +127,27 @@ public class Corretora extends Pessoa {
         }
     }
 
+    public void ResgataSaldo() {
+        double saldoT = 0;
+        for (Cconta i : carteira) {
+            double total = i.getValor();
+            saldoT += total;
+        }
+        System.out.println("Saldo Atual: R$ " + saldoT);
+        System.out.println("Precione Enter para voltar para o Menu ");
+        input.nextLine();
+    }
+
+    public void retornaCarteira() {
+        System.out.println(carteira.toString());
+        System.out.println("Precione Enter para voltar para o Menu ");
+        input.nextLine();
+    }
+
     public void TED() {
         String verificaCpf;
+        Cconta cCarteira = new Cconta();
+        double subtraiValor;
         System.out.println("## BEM VINDO AO SISTEMA DE TRANSFERENCIA ELETRONICA ##\n");
         System.out.print("Digite o seu cpf para realizar a TED: ");
         verificaCpf = input.nextLine();
@@ -136,13 +159,29 @@ public class Corretora extends Pessoa {
             System.out.println("Deu erro!");
         }
 
+        // Cconta i : carteira
         for (int i = 0; i < listaPessoas.size(); i++) {
-            if (verificaCpf != listaPessoas.get(i).getCpf()) {
+            if (!listaPessoas.get(i).getCpf().equals(verificaCpf)) {
                 System.out.println("Esse CPF nao se encontra em nosso banco de dados!");
                 return;
             } else {
                 cCarteira.setCodigo(verificaCpf);
-                System.out.println("");
+                System.out.print("Digite a agencia: ");
+                cCarteira.setAgencia(input.nextInt());
+                System.out.print("Digite o numero da conta: ");
+                cCarteira.setConta(input.nextInt());
+                System.out.print("Digite o valor a ser transferido: ");
+                cCarteira.setValor(input.nextDouble());
+                subtraiValor = cCarteira.getValor();
+                if (listaPessoas.get(i).getCpf().equals(verificaCpf) && listaPessoas.get(i).getSaldo() <= 0) {
+                    System.out.println("Seu saldo eh insuficiente para fazer uma TED");
+                } else {
+                    listaPessoas.get(i).setSaldo(listaPessoas.get(i).getSaldo() - subtraiValor);
+                }
+                System.out.println("\n## TED CONCLUIDO ##");
+
+                carteira.add(cCarteira);
+                input.nextLine();
             }
         }
 

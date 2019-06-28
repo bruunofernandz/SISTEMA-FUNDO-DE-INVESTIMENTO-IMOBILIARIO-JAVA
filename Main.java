@@ -17,6 +17,7 @@ public class Main {
             System.out.println("| 3- Editar dados de um usuario cadastrado |");
             System.out.println("| 4- TED                                   |");
             System.out.println("| 5- Investir em FII                       |");
+            System.out.println("| 6- Resgatar saldo atual                  |");
             System.out.println("| 0- Sair do menu                          |");
             System.out.println("|                                          |");
             System.out.println("-------------------------------------------");
@@ -28,11 +29,17 @@ public class Main {
             if (opcao == 1) {
                 c.Cadastro();
             } else if (opcao == 2) {
-                c.mostraLista();
+                c.MostraLista();
             } else if (opcao == 3) {
                 c.Editar();
             } else if (opcao == 4) {
                 c.TED();
+            } else if (opcao == 5) {
+
+            } else if (opcao == 6) {
+                c.ResgataSaldo();
+            } else if (opcao == 7) {
+                c.retornaCarteira();
             }
 
         } while (opcao != 0);
