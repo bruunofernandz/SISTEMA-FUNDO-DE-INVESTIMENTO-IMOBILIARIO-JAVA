@@ -7,17 +7,19 @@ public class Main {
         Scanner input = new Scanner(System.in);
         int opcao = 0;
         Corretora c = new Corretora();
+        Cotacao app = new Cotacao();
 
         do {
             System.out.println("\n\n-------------------------------------------");
             System.out.println("| #### WELCOME TO FII MOB ####             |");
             System.out.println("|                                          |");
-            System.out.println("| 1- Cadastrar na corretora                |");
+            System.out.println("| 1- Cadastrar                             |");
             System.out.println("| 2- Mostrar usuarios cadastrados          |");
             System.out.println("| 3- Editar dados de um usuario cadastrado |");
             System.out.println("| 4- TED                                   |");
             System.out.println("| 5- Investir em FII                       |");
             System.out.println("| 6- Resgatar saldo atual                  |");
+            System.out.println("| 7- Ver cotacoes do dia                   |");
             System.out.println("| 0- Sair do menu                          |");
             System.out.println("|                                          |");
             System.out.println("-------------------------------------------");
@@ -39,7 +41,9 @@ public class Main {
             } else if (opcao == 6) {
                 c.ResgataSaldo();
             } else if (opcao == 7) {
-                c.retornaCarteira();
+                app.openFile();
+                app.readRecords();
+                app.closeFile();
             }
 
         } while (opcao != 0);

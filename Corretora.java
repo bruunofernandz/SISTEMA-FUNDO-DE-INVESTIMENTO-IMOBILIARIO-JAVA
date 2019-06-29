@@ -2,24 +2,26 @@ import java.util.*;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.regex.*;
+import java.text.*;
 
 public class Corretora extends Pessoa {
+
     Scanner input = new Scanner(System.in);
     List<Pessoa> listaPessoas = new ArrayList<Pessoa>();
     List<Cconta> carteira = new ArrayList<Cconta>();
 
     public class Cconta {
-        private String codigo;
+        private String usuario;
         private int agencia;
         private int conta;
         private double valor = 0;
 
         public void setCodigo(String codigo) {
-            this.codigo = codigo;
+            this.usuario = codigo;
         }
 
         public String getCodigo() {
-            return this.codigo;
+            return this.usuario;
         }
 
         public void setAgencia(int agencia) {
@@ -80,7 +82,6 @@ public class Corretora extends Pessoa {
         p.setConta(input.nextInt());
         System.out.print("Saldo: R$ ");
         p.setSaldo(input.nextDouble());
-
         System.out.println("");
         System.out.println("## Cadastro realizado com sucesso ##");
 
@@ -160,11 +161,8 @@ public class Corretora extends Pessoa {
         }
 
         // Cconta i : carteira
-        for (int i = 0; i < listaPessoas.size(); i++) {
-            if (!listaPessoas.get(i).getCpf().equals(verificaCpf)) {
-                System.out.println("Esse CPF nao se encontra em nosso banco de dados!");
-                return;
-            } else {
+        for (Pessoa i : listaPessoas) {
+            if (i.getCpf().equals(verificaCpf)) {
                 cCarteira.setCodigo(verificaCpf);
                 System.out.print("Digite a agencia: ");
                 cCarteira.setAgencia(input.nextInt());
@@ -173,10 +171,16 @@ public class Corretora extends Pessoa {
                 System.out.print("Digite o valor a ser transferido: ");
                 cCarteira.setValor(input.nextDouble());
                 subtraiValor = cCarteira.getValor();
-                if (listaPessoas.get(i).getCpf().equals(verificaCpf) && listaPessoas.get(i).getSaldo() <= 0) {
+                if (i.getCpf().equals(verificaCpf) && i.getSaldo() <= 0) {
                     System.out.println("Seu saldo eh insuficiente para fazer uma TED");
+                    return;
                 } else {
-                    listaPessoas.get(i).setSaldo(listaPessoas.get(i).getSaldo() - subtraiValor);
+                    i.setSaldo(i.getSaldo() - subtraiValor);
+                    if (i.getSaldo() <= 0) {
+                        System.out.println("Saldo insuficente para faze a TED");
+                        i.setSaldo(i.getSaldo() + subtraiValor);
+                        return;
+                    }
                 }
                 System.out.println("\n## TED CONCLUIDO ##");
 
